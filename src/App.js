@@ -17,6 +17,7 @@ import ContactUsPage from './Components/product/ContactUs';
 import UserProfile from './Components/product/Userprofile';
 import EditProfile from './Components/product/Editprofile';
 import Settings from './Components/product/Setting';
+import Register from './Components/Login/Signup';
 function App() {
   const [email, setEmail] = useState(null);
   const [isLoginVisible, setIsLoginVisible] = useState(false);
@@ -30,6 +31,7 @@ function App() {
         <TopBar email={email} onLoginClick={handleLoginClick} />
         <Routes>
           <Route path='/' element={<Login setEmail={setEmail} />} />
+          <Route path="/register" element={<Register setEmail={setEmail} />} />
           <Route path='/dashboard' element={<Dashboard />} />
           <Route path='/home' element={<HomePage setEmail={setEmail} isLoginVisible={isLoginVisible} setIsLoginVisible={setIsLoginVisible}/>} />
           <Route path='/product' element={<Product />} />

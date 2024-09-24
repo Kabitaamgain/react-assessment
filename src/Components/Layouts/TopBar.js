@@ -1,6 +1,6 @@
 import React from 'react';
 import Topbarlogo from "../../images/—Pngtree—logo killer_6686709 1.png";
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { HiOutlineUserCircle } from "react-icons/hi2";
 import { HiOutlineSearch } from "react-icons/hi";
 import { AiOutlineShoppingCart } from "react-icons/ai";
@@ -8,6 +8,19 @@ import { FaRegHeart } from "react-icons/fa6";
 
 const TopBar = (props) => {
   const location = useLocation();
+  const navigate = useNavigate(); // To navigate after logout
+
+  // Logout function
+  const handleLogout = () => {
+    // Remove token and userId from localStorage
+    window.localStorage.removeItem("token");
+    window.localStorage.removeItem("userId");
+
+    
+
+    // Navigate to login page (or home)
+    navigate("/");
+  };
 
   return (
     <div className='bg-primary p-2'>
@@ -58,9 +71,9 @@ const TopBar = (props) => {
                   </Link>
                 </li>
                 <li>
-                  <Link to="/" className="hover:text-gray-300 transition duration-300">
+                  <button onClick={handleLogout} className="hover:text-gray-300 transition duration-300">
                     Log Out
-                  </Link>
+                  </button>
                 </li>
               </ul>
             </div>

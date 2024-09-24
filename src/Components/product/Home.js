@@ -37,7 +37,7 @@ const HomePage = ({ setEmail }) => {
     // Fetch customer reviews
     const fetchCustomerReviews = async () => {
       try {
-        const response = await fetch('https://dummyjsonproducts.com/?limit=5');
+        const response = await fetch('https://dummyjson.com/products/?limit=5');
         const data = await response.json();
         setCustomerReviews(data.products || []);
       } catch (error) {
