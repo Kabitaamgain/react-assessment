@@ -1,3 +1,4 @@
+// src/Components/UserCart/UserCart.js
 import React, { useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { MdKeyboardArrowRight } from 'react-icons/md';
@@ -10,16 +11,16 @@ const UserCart = () => {
     const userId = localStorage.getItem('userId') || 2;
 
     const fetchCart = async () => {
-        setLoading(true); // Set loading to true before fetch
+        setLoading(true); 
         try {
             const response = await fetch(`http://127.0.0.1:8000/api/single-user-cart/${userId}`);
             const data = await response.json();
-            setCartItems(data.data || []); // Default to an empty array if data is undefined
-            setLoading(false); // Set loading to false after fetch
+            setCartItems(data.data || []);
+            setLoading(false);
         } catch (error) {
             console.error("Error fetching cart:", error);
             setError("Failed to fetch cart items.");
-            setLoading(false); // Set loading to false on error
+            setLoading(false);
         }
     };
 
@@ -27,9 +28,7 @@ const UserCart = () => {
         try {
             const response = await fetch(`http://127.0.0.1:8000/api/updatecart/${id}`, {
                 method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ user_id: userId, quantity: newQuantity }),
             });
             const data = await response.json();
@@ -46,9 +45,7 @@ const UserCart = () => {
         try {
             const response = await fetch(`http://127.0.0.1:8000/api/deletecarts/${id}`, {
                 method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ user_id: userId }),
             });
             const data = await response.json();
@@ -75,11 +72,12 @@ const UserCart = () => {
         if (cartItems.length > 0) {
             const formattedCart = {
                 products: cartItems.map(item => ({
-                    id: item.product.id,
-                    title: item.product.name,
-                    price: item.product.price,
-                    quantity: item.quantity,
-                    thumbnail: item.product.image
+                    ...item,
+                user_id: userId,
+                    image:item.product.image,
+                    price:item.product.price,
+                    name: item.product.name,
+
                 })),
                 total: cartItems.reduce((sum, item) => sum + item.product.price * item.quantity, 0)
             };
@@ -90,7 +88,6 @@ const UserCart = () => {
         }
     };
     
-
     if (loading) {
         return <div className="flex justify-center items-center h-screen text-lg">Loading...</div>;
     }
@@ -152,16 +149,16 @@ const UserCart = () => {
                 <p className="text-center text-xl text-gray-500">Your cart is empty.</p>
             )}
 
-{cartItems.length > 0 && (
-    <div className="absolute bottom-4 right-32">
-        <button 
-            onClick={handleCheckout} 
-            className="bg-gradient-to-r from-blue-500 to-blue-700 text-white py-3 px-6 rounded-full shadow-lg hover:shadow-xl transition-shadow duration-300 transform hover:scale-105"
-        >
-            Checkout
-        </button>
-    </div>
-)}
+            {cartItems.length > 0 && (
+                <div className="absolute bottom-4 right-32">
+                    <button 
+                        onClick={handleCheckout} 
+                        className="bg-gradient-to-r from-blue-500 to-blue-700 text-white py-3 px-6 rounded-full shadow-lg hover:shadow-xl transition-shadow duration-300 transform hover:scale-105"
+                    >
+                        Checkout
+                    </button>
+                </div>
+            )}
         </div>
     );
 };
